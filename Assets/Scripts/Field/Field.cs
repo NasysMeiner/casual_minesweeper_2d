@@ -8,6 +8,9 @@ public class Field
     private int _countBomb;
     private List<List<int>> _field = new List<List<int>>();
 
+    public int GetWidth => _x;
+    public int GetHeight => _y;
+
     public Field(int x, int y, int countBomb)
     {
         _x = x;
@@ -46,8 +49,30 @@ public class Field
         }
     }
 
+    public int[] ChangePositionBomb(int w, int h)
+    {
+        Random random = new Random();
+
+        int x;
+        int y;
+
+        do
+        {
+            x = random.Next(_x);
+            y = random.Next(_y);
+        } while ((x == w || y == h) && _field[x][y] != 1);
+
+        _field[x][y] = 1;
+        _field[w][h] = 0;
+
+        return new int[] { x, y };
+    }
+
     public int GetValue(int x, int y)
     {
+        if (x < 0 || x >= _x || y < 0 || y >= _y)
+            return 0;
+
         return _field[x][y];
     }
 

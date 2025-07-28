@@ -29,6 +29,9 @@ public class Cell : MonoBehaviour
 
         if (isBomb)
             _outlineCell.OnBomb();
+
+        if (isBomb)
+            Debug.Log("Boom!!!");
     }
 
     public void OnOutline()
@@ -40,5 +43,10 @@ public class Cell : MonoBehaviour
     public void OffOutline()
     {
         _outlineCell.OffOutline();
+    }
+
+    public void SetCountBomb(int count)
+    {
+        _outlineCell.SetCountBomb(count);
     }
 }

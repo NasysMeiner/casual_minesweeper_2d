@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class OutlineCell : MonoBehaviour
 {
     [SerializeField] private GameObject _outline;
     [SerializeField] private SpriteRenderer _sr;
+    [SerializeField] private TMP_Text _text;
 
     private SpriteRenderer _cellSpriteRenderer;
 
@@ -37,5 +39,10 @@ public class OutlineCell : MonoBehaviour
         Color newColor = _sr.color;
         newColor.a = 255f;
         _sr.color = newColor;
+    }
+
+    public void SetCountBomb( int count)
+    {
+        _text.text = count.ToString();
     }
 }

@@ -33,4 +33,10 @@ public class CellArray
         Cell destroyCell = _cells[coord[1] * _length + coord[0]];
         destroyCell.Destroy(isBomb);
     }
+
+    public void SetCountBomb(int[] coord, int count)
+    {
+        Cell cell = _cells[coord[1] * _length + coord[0]];
+        cell.SetCountBomb(count);
+    }
 }
