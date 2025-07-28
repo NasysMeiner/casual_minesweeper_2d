@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 61981221}
   - component: {fileID: 61981222}
+  - component: {fileID: 61981223}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -168,6 +169,27 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!65 &61981223
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61981220}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 18.636974, y: 10.596191, z: 1}
+  m_Center: {x: 0.16750765, y: 0.14181995, z: -0.53999996}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,6 +488,9 @@ MonoBehaviour:
   _startPoint: {fileID: 1644178385}
   _prefabFieldManager: {fileID: 8539928835403519926, guid: ea721abf5780a8141960985032995d22, type: 3}
   _cellData: {fileID: 11400000, guid: ea03bf6fd85429640a7e831ae077d292, type: 2}
+  _prefabInput: {fileID: 565741973988876649, guid: 0a92a6315c5d7614c8578e22a83d81f6, type: 3}
+  _camera: {fileID: 519420031}
+  _maxDist: 100
 --- !u!114 &853249622
 MonoBehaviour:
   m_ObjectHideFlags: 0

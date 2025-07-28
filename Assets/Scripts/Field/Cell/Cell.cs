@@ -2,31 +2,43 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _sr;
-    [SerializeField] private GameObject _outline;
+    private OutlineCell _outlineCell;
 
     private int[] _coord = new int[2];
 
     public int[] Coord => _coord;
-
-    private void Start()
-    {
-        DisableOutline();
-    }
+    public bool IsDestroy { get; set; }
+    public bool IsBomb { get; set; }
 
     public void Init(int x, int y)
     {
         _coord[0] = x;
-        _coord[1] = y; 
+        _coord[1] = y;
+
+        IsDestroy = false;
+        IsBomb = false;
+
+        _outlineCell = GetComponent<OutlineCell>();
     }
 
-    public void ActiveOutline()
+    public void Destroy(bool isBomb)
     {
-        _outline.SetActive(true);
+        IsDestroy = true;
+
+        _outlineCell.OffSprite();
+
+        if (isBomb)
+            _outlineCell.OnBomb();
     }
 
-    public void DisableOutline()
+    public void OnOutline()
     {
-        _outline.SetActive(false);
+        if(!IsDestroy)
+            _outlineCell.OnOutline();
+    }
+
+    public void OffOutline()
+    {
+        _outlineCell.OffOutline();
     }
 }
