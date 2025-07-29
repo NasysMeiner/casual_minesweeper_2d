@@ -9,6 +9,7 @@ public class Cell : MonoBehaviour
     public int[] Coord => _coord;
     public bool IsDestroy { get; set; }
     public bool IsBomb { get; set; }
+    public int CountBomb { get; set; }
 
     public void Init(int x, int y)
     {
@@ -17,6 +18,7 @@ public class Cell : MonoBehaviour
 
         IsDestroy = false;
         IsBomb = false;
+        CountBomb = 0;
 
         _outlineCell = GetComponent<OutlineCell>();
     }
@@ -47,6 +49,7 @@ public class Cell : MonoBehaviour
 
     public void SetCountBomb(int count)
     {
+        CountBomb = count;
         _outlineCell.SetCountBomb(count);
     }
 }

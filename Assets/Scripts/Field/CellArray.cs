@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CellArray
 {
     private List<Cell> _cells = new List<Cell>();
     private int _length;
-    
+
     public CellArray(int x, int y, float off, Transform pos, Cell prefab)
     {
         _length = x;
         Vector3 startPos = pos.position;
 
-        for(int i = 0; i < y; i++)
+        for (int i = 0; i < y; i++)
         {
-            for(int j = 0; j < x; j++)
+            for (int j = 0; j < x; j++)
             {
                 Cell newCell = Factory.CreateCell(pos, prefab);
                 newCell.Init(j, i);
@@ -30,13 +29,26 @@ public class CellArray
 
     public void DestroyCell(int[] coord, bool isBomb)
     {
-        Cell destroyCell = _cells[coord[1] * _length + coord[0]];
-        destroyCell.Destroy(isBomb);
+        GetCell(coord).Destroy(isBomb);
+    }
+
+    public bool IsDestroy(int[] coord)
+    {
+        return GetCell(coord).IsDestroy;
     }
 
     public void SetCountBomb(int[] coord, int count)
     {
-        Cell cell = _cells[coord[1] * _length + coord[0]];
-        cell.SetCountBomb(count);
+        GetCell(coord).SetCountBomb(count);
+    }
+
+    public int GetCountBomb(int[] coord)
+    {
+        return GetCell(coord).CountBomb;
+    }
+
+    private Cell GetCell(int[] coord)
+    {
+        return _cells[coord[1] * _length + coord[0]];
     }
 }

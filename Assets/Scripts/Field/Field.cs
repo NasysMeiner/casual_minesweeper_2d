@@ -81,6 +81,14 @@ public class Field
         _field[x][y] = value;
     }
 
+    public bool IsExists(int x, int y)
+    {
+        if (x < 0 || x >= _x || y < 0 || y >= _y)
+            return false;
+
+        return true;
+    }
+
     private void ClearField()
     {
         for (int i = 0; i < _x; i++)

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FieldManager : MonoBehaviour
@@ -42,6 +44,52 @@ public class FieldManager : MonoBehaviour
             CalculateBomb();
 
         _cellArray.DestroyCell(coord, isBomb);
+
+        if(!isBomb)
+            DestroyEmptyCell(coord);
+    }
+
+    private void DestroyEmptyCell(int[] coord)
+    {
+        List<int[]> cells = new List<int[]>() { coord };
+
+        do
+        {
+            coord = cells[cells.Count - 1];
+            cells.RemoveAt(cells.Count - 1);
+            bool isNumberCell = _cellArray.GetCountBomb(coord) > 0 ? true : false;
+
+            int h = coord[1] - 1 < 0 ? 0 : coord[1] - 1;
+            int w = coord[0] - 1 < 0 ? 0 : coord[0] - 1;
+
+            for(int y = h; y <= coord[1] + 1; y++)
+            {
+                if (y >= _field.GetHeight)
+                    break;
+
+                for(int x = w; x <= coord[0] + 1; x++)
+                {
+                    if (x >= _field.GetWidth)
+                        break;
+
+                    int[] newCoord = new int[] { x, y };
+
+                    if(!_cellArray.IsDestroy(newCoord))
+                    {
+                        int bomb = _cellArray.GetCountBomb(newCoord);
+                        int isbomb = _field.GetValue(x, y);
+
+                        if (_field.GetValue(x, y) == 0 && _cellArray.GetCountBomb(newCoord) == 0)
+                            cells.Add(newCoord);
+
+                        if (_field.GetValue(x, y) != 1 && ((isNumberCell && _cellArray.GetCountBomb(newCoord) == 0) || !isNumberCell))
+                        {
+                            _cellArray.DestroyCell(newCoord, false);
+                        }
+                    }                        
+                }
+            }
+        } while (cells.Count != 0);
     }
 
     private void CalculateBomb()
