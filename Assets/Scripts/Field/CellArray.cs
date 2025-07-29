@@ -6,7 +6,7 @@ public class CellArray
     private List<Cell> _cells = new List<Cell>();
     private int _length;
 
-    public CellArray(int x, int y, float off, Transform pos, Cell prefab)
+    public CellArray(int x, int y, float off, Transform pos, Cell prefab, List<Color> colorText)
     {
         _length = x;
         Vector3 startPos = pos.position;
@@ -16,7 +16,7 @@ public class CellArray
             for (int j = 0; j < x; j++)
             {
                 Cell newCell = Factory.CreateCell(pos, prefab);
-                newCell.Init(j, i);
+                newCell.Init(j, i, colorText);
                 _cells.Add(newCell);
                 newCell.transform.position = startPos;
                 startPos.x += off;

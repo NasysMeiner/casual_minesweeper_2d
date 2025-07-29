@@ -32,8 +32,8 @@ public class Field
     {
         ClearField();
 
-        if(_x * _y < _countBomb)
-            _countBomb = _x * _y;
+        if(_x * _y <= _countBomb)
+            _countBomb = _x * _y - 1;
 
         Random random = new Random();
 
@@ -51,21 +51,36 @@ public class Field
 
     public int[] ChangePositionBomb(int w, int h)
     {
-        Random random = new Random();
+        Random random = new();
 
-        int x;
-        int y;
+        int emptyCell = _x * _y - _countBomb;
+        int randomEmpty = random.Next(emptyCell);
+        int[] newCoord = new int[2];
 
-        do
+        for(int i = 0; i < _y; i++)
         {
-            x = random.Next(_x);
-            y = random.Next(_y);
-        } while ((x == w || y == h) && _field[x][y] != 1);
+            for(int j = 0; j < _x; j++)
+            {
+                if (_field[j][i] == 0)
+                {
+                    randomEmpty--;
 
-        _field[x][y] = 1;
+                    if(randomEmpty <= 0)
+                    {
+                        newCoord[0] = j;
+                        newCoord[1] = i;
+                        goto exit;
+                    }
+                }
+            }
+        }
+
+    exit:
+
+        _field[newCoord[0]][newCoord[1]] = 1;
         _field[w][h] = 0;
 
-        return new int[] { x, y };
+        return newCoord;
     }
 
     public int GetValue(int x, int y)

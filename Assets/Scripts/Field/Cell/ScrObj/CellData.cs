@@ -11,4 +11,5 @@ public class CellData : ScriptableObject
     [Space]
     [Header("Graphic")]
     public Cell Prefab;
+    public ColorCellData ColorText;
 }

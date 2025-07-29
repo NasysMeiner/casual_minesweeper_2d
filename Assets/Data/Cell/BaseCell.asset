@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: addf91b3d93a9064c807abd951c8e531, type: 3}
   m_Name: BaseCell
   m_EditorClassIdentifier: 
-  Width: 12
+  Width: 3
   Height: 3
   Off: 1
-  CountBombs: 2
+  CountBombs: 8
   Prefab: {fileID: 4347592838740758394, guid: 22e45a7f7e1ffb04594a2fd0c3f0b7b2, type: 3}
+  ColorText: {fileID: 11400000, guid: be1167209a066d349b18f2eb1e1f3b1b, type: 2}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,12 +9,18 @@ public class OutlineCell : MonoBehaviour
     [SerializeField] private TMP_Text _text;
 
     private SpriteRenderer _cellSpriteRenderer;
+    private List<Color> _colorText;
 
     private void Start()
     {
         OffOutline();
 
         _cellSpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Init(List<Color> colorText)
+    {
+        _colorText = colorText;
     }
 
     public void OnOutline()
@@ -44,5 +51,8 @@ public class OutlineCell : MonoBehaviour
     public void SetCountBomb( int count)
     {
         _text.text = count.ToString();
+
+        if(count != 0)
+            _text.color = _colorText[count - 1];
     }
 }
