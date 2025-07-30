@@ -23,6 +23,19 @@ public class OutlineCell : MonoBehaviour
         _colorText = colorText;
     }
 
+    public void ResetOutline()
+    {
+        Color newColor = _cellSpriteRenderer.color;
+        newColor.a = 255f;
+        _cellSpriteRenderer.color = newColor;
+
+        newColor = _sr.color;
+        newColor.a = 0f;
+        _sr.color = newColor;
+
+        _text.text = "";
+    }
+
     public void OnOutline()
     {
         _outline.SetActive(true);

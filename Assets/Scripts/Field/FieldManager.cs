@@ -25,6 +25,13 @@ public class FieldManager : MonoBehaviour
         _inputHandler.DestroyCell += OnDestroyCell;
     }
 
+    public void ResetField()
+    {
+        _field.GenerateField();
+        _cellArray.ResetCells();
+        _countClick = 0;
+    }
+
     private void OnDestroyCell(int[] coord)
     {
         _countClick++;

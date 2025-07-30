@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class CompositeRootField : CompositeRoot
 {
-    [SerializeField] private GameObject _startPoint;
+    [SerializeField] private GameObject _startPointField;
+    [SerializeField] private GameObject _startPointResetButton;
     [Space]
     [Header("Components")]
     [Space]
     [Header("Field")]
     [SerializeField] private FieldManager _prefabFieldManager;
     [SerializeField] private CellData _cellData;
+    [Space]
+    [SerializeField] private ResetButton _prefabResetButton;
     [Space]
     [Header("Input")]
     [SerializeField] private InputHandler _prefabInput;
@@ -17,6 +20,7 @@ public class CompositeRootField : CompositeRoot
 
     private FieldManager _fieldManager;
     private InputHandler _inputHandler;
+    private ResetButton _resetButton;
 
     public override void Compose()
     {
@@ -24,8 +28,11 @@ public class CompositeRootField : CompositeRoot
         _inputHandler.Init(_camera, _maxDist);
 
         _fieldManager = Instantiate(_prefabFieldManager, transform);
-        _fieldManager.transform.position = _startPoint.transform.position;
-
+        _fieldManager.transform.position = _startPointField.transform.position;
         _fieldManager.Init(_cellData, _inputHandler);
+
+        _resetButton = Instantiate(_prefabResetButton, transform);
+        _resetButton.transform.position = _startPointResetButton.transform.position;
+        _resetButton.Init(_fieldManager, _inputHandler);
     }
 }

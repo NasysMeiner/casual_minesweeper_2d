@@ -25,6 +25,15 @@ public class Cell : MonoBehaviour
         _outlineCell.Init(colorText);
     }
 
+    public void ResetCell()
+    {
+        IsDestroy = false;
+        IsBomb = false;
+        CountBomb = 0;
+
+        _outlineCell.ResetOutline();
+    }
+
     public void Destroy(bool isBomb)
     {
         IsDestroy = true;

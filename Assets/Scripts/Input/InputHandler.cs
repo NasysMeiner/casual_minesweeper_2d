@@ -7,8 +7,10 @@ public class InputHandler : MonoBehaviour
     private float _maxDist;
 
     private Cell _activeCell = null;
+    private bool _isResetButton = false;
 
     public event UnityAction<int[]> DestroyCell;
+    public event UnityAction ResetField;
 
     private void Update()
     {
@@ -29,8 +31,13 @@ public class InputHandler : MonoBehaviour
     private void CheckClick()
     {
         if(Input.GetMouseButtonUp(0))
+        {
             if (_activeCell != null)
                 DestroyCell?.Invoke(_activeCell.Coord);
+            else if (_isResetButton)
+                ResetField?.Invoke();
+        }
+            
     }
 
     private void CheckCell()
@@ -58,6 +65,15 @@ public class InputHandler : MonoBehaviour
                     _activeCell.OffOutline();
                     _activeCell = null;
                 }
+            }
+
+            if(raycast.collider.TryGetComponent(out ResetButton reset))
+            {
+                _isResetButton = true;
+            }
+            else
+            {
+                _isResetButton = false;
             }
         }
     }

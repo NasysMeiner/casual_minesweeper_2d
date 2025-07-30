@@ -27,6 +27,12 @@ public class CellArray
         }
     }
 
+    public void ResetCells()
+    {
+        foreach(Cell cell in _cells)
+            cell.ResetCell();
+    }
+
     public void DestroyCell(int[] coord, bool isBomb)
     {
         GetCell(coord).Destroy(isBomb);
