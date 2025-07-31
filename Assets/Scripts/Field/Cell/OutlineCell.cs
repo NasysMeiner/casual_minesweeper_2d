@@ -8,7 +8,7 @@ public class OutlineCell : MonoBehaviour
     [SerializeField] private GameObject _outline;
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private TMP_Text _text;
-    [SerializeField] private Image _flag;
+    [SerializeField] private SpriteRenderer _flag;
 
     private SpriteRenderer _cellSpriteRenderer;
     private List<Color> _colorText;

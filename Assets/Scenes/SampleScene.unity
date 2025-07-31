@@ -493,6 +493,8 @@ MonoBehaviour:
   _prefabInput: {fileID: 565741973988876649, guid: 0a92a6315c5d7614c8578e22a83d81f6, type: 3}
   _camera: {fileID: 519420031}
   _maxDist: 100
+  _prefabScoreCounter: {fileID: 2329389164404038264, guid: a04d1c56fe6e3024cbed60bd811459d6, type: 3}
+  _pointsCellData: {fileID: 11400000, guid: c1f75527ed5ee3a44b942eb679214fe0, type: 2}
 --- !u!114 &853249622
 MonoBehaviour:
   m_ObjectHideFlags: 0

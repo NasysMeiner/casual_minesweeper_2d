@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ed780c158720e46b43a888964e2424, type: 3}
   m_Name: DefaultPointsCellData
   m_EditorClassIdentifier: 
-  DefaultPointCell: 0
+  DefaultPointCell: 5
