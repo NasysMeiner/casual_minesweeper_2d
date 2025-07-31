@@ -17,10 +17,15 @@ public class CompositeRootField : CompositeRoot
     [SerializeField] private InputHandler _prefabInput;
     [SerializeField] private Camera _camera;
     [SerializeField] private float _maxDist;
+    [Space]
+    [Header("Player")]
+    [SerializeField] private ScoreCounter _prefabScoreCounter;
+    [SerializeField] private PointsCellData _pointsCellData;
 
     private FieldManager _fieldManager;
     private InputHandler _inputHandler;
     private ResetButton _resetButton;
+    private ScoreCounter _scoreCounter;
 
     public override void Compose()
     {
@@ -34,5 +39,8 @@ public class CompositeRootField : CompositeRoot
         _resetButton = Instantiate(_prefabResetButton, transform);
         _resetButton.transform.position = _startPointResetButton.transform.position;
         _resetButton.Init(_fieldManager, _inputHandler);
+
+        _scoreCounter = Instantiate(_prefabScoreCounter, transform);
+        _scoreCounter.Init(_fieldManager, _pointsCellData);
     }
 }

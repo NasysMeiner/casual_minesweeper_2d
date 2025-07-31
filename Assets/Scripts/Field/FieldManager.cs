@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FieldManager : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class FieldManager : MonoBehaviour
 
     private int _countClick = 0;
 
+    public event UnityAction<int> DestroyCell;
+
     private void OnDisable()
     {
         _inputHandler.DestroyCell -= OnDestroyCell;
+        _inputHandler.SetFlag -= OnSetFlag;
     }
 
     public void Init(CellData cellData, InputHandler inputHandler)
@@ -23,6 +27,7 @@ public class FieldManager : MonoBehaviour
         _cellArray = new CellArray(cellData.Width, cellData.Height, cellData.Off, transform, cellData.Prefab, cellData.ColorText.Colors);
 
         _inputHandler.DestroyCell += OnDestroyCell;
+        _inputHandler.SetFlag += OnSetFlag;
     }
 
     public void ResetField()
@@ -32,26 +37,34 @@ public class FieldManager : MonoBehaviour
         _countClick = 0;
     }
 
+    private void OnSetFlag(int[] coord)
+    {
+        _cellArray.SetFlag(coord);
+    }
+
     private void OnDestroyCell(int[] coord)
     {
+        if (_cellArray.GetIsSetFlag(coord))
+            return;
+
         _countClick++;
 
         bool isBomb = _field.GetValue(coord[0], coord[1]) != 0;
 
-        if (isBomb && _countClick == 1)
-        {
-            isBomb = false;
-            int[] newCoore = _field.ChangePositionBomb(coord[0], coord[1]);
-
-            Debug.Log("Last " + coord[0] + " " + coord[1] + " New " + newCoore[0] + " " + newCoore[1]);
-        }
-
         if (_countClick == 1)
-            CalculateBomb();
+            ChangeBombPlace(ref isBomb, coord);
 
-        _cellArray.DestroyCell(coord, isBomb);
+        DefaultDestroyCell(coord, isBomb);
 
         if (!isBomb)
+            DestroyEmptyCell(coord); //Add destroy empty score
+
+        DestroyCell?.Invoke(1);
+    }
+
+    private void DestroyEmptyCell(List<int[]> coords)
+    {
+        foreach (int[] coord in coords)
             DestroyEmptyCell(coord);
     }
 
@@ -63,7 +76,7 @@ public class FieldManager : MonoBehaviour
         {
             coord = cells[cells.Count - 1];
             cells.RemoveAt(cells.Count - 1);
-            bool isNumberCell = _cellArray.GetCountBomb(coord) > 0 ? true : false;
+            bool isNumberCell = _cellArray.GetCountBomb(coord) > 0;
 
             int h = coord[1] - 1 < 0 ? 0 : coord[1] - 1;
             int w = coord[0] - 1 < 0 ? 0 : coord[0] - 1;
@@ -82,20 +95,33 @@ public class FieldManager : MonoBehaviour
 
                     if (!_cellArray.IsDestroy(newCoord))
                     {
-                        int bomb = _cellArray.GetCountBomb(newCoord);
-                        int isbomb = _field.GetValue(x, y);
-
                         if (_field.GetValue(x, y) == 0 && _cellArray.GetCountBomb(newCoord) == 0)
                             cells.Add(newCoord);
 
                         if (_field.GetValue(x, y) != 1 && ((isNumberCell && _cellArray.GetCountBomb(newCoord) == 0) || !isNumberCell))
-                        {
-                            _cellArray.DestroyCell(newCoord, false);
-                        }
+                            DefaultDestroyCell(newCoord, false);
                     }
                 }
             }
         } while (cells.Count != 0);
+    }
+
+    private void DefaultDestroyCell(int[] coord, bool isBomb)
+    {
+        _cellArray.DestroyCell(coord, isBomb);
+    }
+
+    private void ChangeBombPlace(ref bool isBomb, int[] coord)
+    {
+        if (isBomb)
+        {
+            isBomb = false;
+            int[] newCoore = _field.ChangePositionBomb(coord[0], coord[1]);
+
+            Debug.Log("Last " + coord[0] + " " + coord[1] + " New " + newCoore[0] + " " + newCoore[1]);
+        }
+
+        CalculateBomb();
     }
 
     private void CalculateBomb()

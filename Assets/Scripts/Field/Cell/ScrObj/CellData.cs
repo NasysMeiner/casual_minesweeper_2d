@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Data/CellData")]
+[CreateAssetMenu(menuName = "Data/Cell/CellData")]
 public class CellData : ScriptableObject
 {
     [Header("Main")]

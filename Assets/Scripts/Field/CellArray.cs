@@ -53,6 +53,16 @@ public class CellArray
         return GetCell(coord).CountBomb;
     }
 
+    public void SetFlag(int[] coord)
+    {
+        GetCell(coord).SetFlag();
+    }
+
+    public bool GetIsSetFlag(int[] coord)
+    {
+        return GetCell(coord).GetIsSetFlag();
+    }
+
     private Cell GetCell(int[] coord)
     {
         return _cells[coord[1] * _length + coord[0]];

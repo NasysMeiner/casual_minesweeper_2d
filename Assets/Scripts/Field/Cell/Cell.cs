@@ -8,9 +8,9 @@ public class Cell : MonoBehaviour
     private int[] _coord = new int[2];
 
     public int[] Coord => _coord;
-    public bool IsDestroy { get; set; }
-    public bool IsBomb { get; set; }
-    public int CountBomb { get; set; }
+    public bool IsDestroy { get; private set; }
+    public bool IsBomb { get; private set; }
+    public int CountBomb { get; private set; }
 
     public void Init(int x, int y, List<Color> colorText)
     {
@@ -36,6 +36,9 @@ public class Cell : MonoBehaviour
 
     public void Destroy(bool isBomb)
     {
+        if (_outlineCell.IsSetFlag)
+            return;
+
         IsDestroy = true;
 
         _outlineCell.OffSprite();
@@ -62,5 +65,21 @@ public class Cell : MonoBehaviour
     {
         CountBomb = count;
         _outlineCell.SetCountBomb(count);
+    }
+
+    public void SetFlag()
+    {
+        if(!IsDestroy)
+        {
+            if (!_outlineCell.IsSetFlag)
+                _outlineCell.SetFlag();
+            else
+                _outlineCell.OffFlag();
+        }
+    }
+
+    public bool GetIsSetFlag()
+    {
+        return _outlineCell.IsSetFlag;
     }
 }

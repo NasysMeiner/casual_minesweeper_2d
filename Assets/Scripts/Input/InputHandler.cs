@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
     private bool _isResetButton = false;
 
     public event UnityAction<int[]> DestroyCell;
+    public event UnityAction<int[]> SetFlag;
     public event UnityAction ResetField;
 
     private void Update()
@@ -19,7 +20,14 @@ public class InputHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CheckCell();
+        Vector3 mousePos = Input.mousePosition;
+        Ray ray = _camera.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out RaycastHit raycast, _maxDist))
+        {
+            CheckCell(raycast);
+            CheckRestButton(raycast);
+        }
     }
 
     public void Init(Camera camera, float maxDist)
@@ -30,51 +38,49 @@ public class InputHandler : MonoBehaviour
 
     private void CheckClick()
     {
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             if (_activeCell != null)
                 DestroyCell?.Invoke(_activeCell.Coord);
             else if (_isResetButton)
                 ResetField?.Invoke();
         }
-            
+        else if (Input.GetMouseButtonUp(1))
+        {
+            if (_activeCell != null)
+                SetFlag?.Invoke(_activeCell.Coord);
+        }
+
     }
 
-    private void CheckCell()
+    private void CheckCell(RaycastHit raycast)
     {
-        Vector3 mousePos = Input.mousePosition;
-        Ray ray = _camera.ScreenPointToRay(mousePos);
-
-        if (Physics.Raycast(ray, out RaycastHit raycast, _maxDist))
+        if (raycast.collider.TryGetComponent(out Cell cell))
         {
-            if (raycast.collider.TryGetComponent(out Cell cell))
+            if (_activeCell != null)
             {
-                if (_activeCell != null)
-                {
-                    _activeCell.OffOutline();
-                    _activeCell = null;
-                }
-
-                cell.OnOutline();
-                _activeCell = cell;
-            }
-            else
-            {
-                if (_activeCell != null)
-                {
-                    _activeCell.OffOutline();
-                    _activeCell = null;
-                }
+                _activeCell.OffOutline();
+                _activeCell = null;
             }
 
-            if(raycast.collider.TryGetComponent(out ResetButton reset))
+            cell.OnOutline();
+            _activeCell = cell;
+        }
+        else
+        {
+            if (_activeCell != null)
             {
-                _isResetButton = true;
-            }
-            else
-            {
-                _isResetButton = false;
+                _activeCell.OffOutline();
+                _activeCell = null;
             }
         }
+    }
+
+    private void CheckRestButton(RaycastHit raycast)
+    {
+        if (raycast.collider.TryGetComponent(out ResetButton _))
+            _isResetButton = true;
+        else
+            _isResetButton = false;
     }
 }
