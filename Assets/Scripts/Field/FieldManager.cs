@@ -11,7 +11,8 @@ public class FieldManager : MonoBehaviour
 
     private int _countClick = 0;
 
-    public event UnityAction<int> DestroyCell;
+    public event UnityAction<CellDestroyedData> DestroyCell;
+    public event UnityAction Damage;
 
     private void OnDisable()
     {
@@ -44,7 +45,7 @@ public class FieldManager : MonoBehaviour
 
     private void OnDestroyCell(int[] coord)
     {
-        if (_cellArray.GetIsSetFlag(coord))
+        if (_cellArray.GetIsSetFlag(coord) || _cellArray.IsDestroy(coord))
             return;
 
         _countClick++;
@@ -54,12 +55,15 @@ public class FieldManager : MonoBehaviour
         if (_countClick == 1)
             ChangeBombPlace(ref isBomb, coord);
 
-        DefaultDestroyCell(coord, isBomb);
+        CellDestroyedData destroyedData = CreateDestroyedData(coord, isBomb); //Create Data Cell Destroyed
 
         if (!isBomb)
             DestroyEmptyCell(coord); //Add destroy empty score
 
-        DestroyCell?.Invoke(1);
+        if (isBomb)
+            Damage?.Invoke();
+
+        DestroyCell?.Invoke(destroyedData);
     }
 
     private void DestroyEmptyCell(List<int[]> coords)
@@ -106,9 +110,18 @@ public class FieldManager : MonoBehaviour
         } while (cells.Count != 0);
     }
 
-    private void DefaultDestroyCell(int[] coord, bool isBomb)
+    private CellDestroyedData CreateDestroyedData(int[] coord, bool isBomb) //Preparation
+    {
+        return DefaultDestroyCell(coord, isBomb);
+    }
+
+    private CellDestroyedData DefaultDestroyCell(int[] coord, bool isBomb)
     {
         _cellArray.DestroyCell(coord, isBomb);
+        CellDestroyedData newData = new();
+        newData.IsDamage = isBomb;
+        newData.AddCell(_cellArray.GetPositionCell(coord), isBomb);
+        return newData;
     }
 
     private void ChangeBombPlace(ref bool isBomb, int[] coord)

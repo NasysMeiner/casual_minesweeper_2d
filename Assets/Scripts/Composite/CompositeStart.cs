@@ -21,14 +21,31 @@ public class CompositeRootField : CompositeRoot
     [Header("Player")]
     [SerializeField] private ScoreCounter _prefabScoreCounter;
     [SerializeField] private PointsCellData _pointsCellData;
+    [Space]
+    [SerializeField] private HealthManager _prefabHealthManager;
+    [SerializeField] private int _countHealth;
+    [Space]
+    [Header("Anim")]
+    [SerializeField] private TextDamage _prefabTextDamage;
+    [SerializeField] private float _lifeTime;
+    [Space]
+    [Header("UI")]
+    [SerializeField] private CanvasContainer _prefabCanvas;
+    [SerializeField] private Heart _prefabHeart;
+    [SerializeField] private float _off;
 
     private FieldManager _fieldManager;
     private InputHandler _inputHandler;
     private ResetButton _resetButton;
     private ScoreCounter _scoreCounter;
+    private HealthManager _healthManager;
+
+    private CanvasContainer _canvas;
 
     public override void Compose()
     {
+        _canvas = Instantiate(_prefabCanvas);
+
         _inputHandler = Instantiate(_prefabInput, transform);
         _inputHandler.Init(_camera, _maxDist);
 
@@ -41,6 +58,15 @@ public class CompositeRootField : CompositeRoot
         _resetButton.Init(_fieldManager, _inputHandler);
 
         _scoreCounter = Instantiate(_prefabScoreCounter, transform);
-        _scoreCounter.Init(_fieldManager, _pointsCellData);
+        _scoreCounter.Init(_fieldManager, _pointsCellData, _canvas.AnimCreator);
+
+        _healthManager = Instantiate(_prefabHealthManager, transform);
+        _healthManager.Init(_countHealth, _fieldManager);
+
+        //UI
+
+        _canvas.HealthView.Init(_countHealth, _off, _prefabHeart, _healthManager);
+        _canvas.ScoreView.Init(_scoreCounter);
+        _canvas.AnimCreator.Init(_camera, _prefabTextDamage, _lifeTime);
     }
 }

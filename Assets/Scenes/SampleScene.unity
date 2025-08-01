@@ -190,6 +190,74 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 18.636974, y: 10.596191, z: 1}
   m_Center: {x: 0.16750765, y: 0.14181995, z: -0.53999996}
+--- !u!1 &135384126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 135384129}
+  - component: {fileID: 135384128}
+  - component: {fileID: 135384127}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &135384127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135384126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &135384128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135384126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &135384129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135384126}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +563,13 @@ MonoBehaviour:
   _maxDist: 100
   _prefabScoreCounter: {fileID: 2329389164404038264, guid: a04d1c56fe6e3024cbed60bd811459d6, type: 3}
   _pointsCellData: {fileID: 11400000, guid: c1f75527ed5ee3a44b942eb679214fe0, type: 2}
+  _prefabHealthManager: {fileID: 4889275581060014789, guid: 897d5b29f3c946547b7f98ef033ca53d, type: 3}
+  _countHealth: 7
+  _prefabTextDamage: {fileID: 7208369665361837844, guid: bfc9a485c40cdf34a8dfedcb8a6bfe7a, type: 3}
+  _lifeTime: 1
+  _prefabCanvas: {fileID: 3152549988923553055, guid: e3e3ab582102e8f4ebee65fbbaa10015, type: 3}
+  _prefabHeart: {fileID: 8704841283757458212, guid: f394c3abf61eaca429d70b8ed9987ffb, type: 3}
+  _off: 90
 --- !u!114 &853249622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5838,3 +5913,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 804110199}
   - {fileID: 853249623}
+  - {fileID: 135384129}

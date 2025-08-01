@@ -63,6 +63,11 @@ public class CellArray
         return GetCell(coord).GetIsSetFlag();
     }
 
+    public Vector3 GetPositionCell(int[] coord)
+    {
+        return GetCell(coord).transform.position;
+    }
+
     private Cell GetCell(int[] coord)
     {
         return _cells[coord[1] * _length + coord[0]];
