@@ -33,6 +33,8 @@ public class CompositeRootField : CompositeRoot
     [SerializeField] private CanvasContainer _prefabCanvas;
     [SerializeField] private Heart _prefabHeart;
     [SerializeField] private float _off;
+    [Space]
+    [SerializeField] private SkillData _skillData;
 
     private FieldManager _fieldManager;
     private InputHandler _inputHandler;
@@ -68,5 +70,6 @@ public class CompositeRootField : CompositeRoot
         _canvas.HealthView.Init(_countHealth, _off, _prefabHeart, _healthManager);
         _canvas.ScoreView.Init(_scoreCounter);
         _canvas.AnimCreator.Init(_camera, _prefabTextDamage, _lifeTime);
+        _canvas.SkillListView.Init(_skillData, _inputHandler);
     }
 }

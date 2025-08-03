@@ -43,7 +43,7 @@ public class FieldManager : MonoBehaviour
         _cellArray.SetFlag(coord);
     }
 
-    private void OnDestroyCell(int[] coord)
+    private void OnDestroyCell(int[] coord, Skills skill)
     {
         if (_cellArray.GetIsSetFlag(coord) || _cellArray.IsDestroy(coord))
             return;

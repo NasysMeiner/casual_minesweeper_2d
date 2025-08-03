@@ -570,6 +570,7 @@ MonoBehaviour:
   _prefabCanvas: {fileID: 3152549988923553055, guid: e3e3ab582102e8f4ebee65fbbaa10015, type: 3}
   _prefabHeart: {fileID: 8704841283757458212, guid: f394c3abf61eaca429d70b8ed9987ffb, type: 3}
   _off: 90
+  _skillData: {fileID: 11400000, guid: 4eee626a99727874db065de93f9937ae, type: 2}
 --- !u!114 &853249622
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,8 +8,9 @@ public class InputHandler : MonoBehaviour
 
     private Cell _activeCell = null;
     private bool _isResetButton = false;
+    private Skills _currentSkill;
 
-    public event UnityAction<int[]> DestroyCell;
+    public event UnityAction<int[], Skills> DestroyCell;
     public event UnityAction<int[]> SetFlag;
     public event UnityAction ResetField;
 
@@ -34,6 +35,15 @@ public class InputHandler : MonoBehaviour
     {
         _camera = camera;
         _maxDist = maxDist;
+        _currentSkill = Skills.Default;
+    }
+
+    public void SetSkill(Skills typeSkill)
+    {
+        if (typeSkill != _currentSkill)
+            _currentSkill = typeSkill;
+        else
+            _currentSkill = Skills.Default;
     }
 
     private void CheckClick()
@@ -41,7 +51,7 @@ public class InputHandler : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             if (_activeCell != null)
-                DestroyCell?.Invoke(_activeCell.Coord);
+                DestroyCell?.Invoke(_activeCell.Coord, _currentSkill);
             else if (_isResetButton)
                 ResetField?.Invoke();
         }
