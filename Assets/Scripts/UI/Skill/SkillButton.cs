@@ -61,4 +61,9 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         else
             _outline.enabled = false;
     }
+
+    public void SetSkill()
+    {
+        _skillListView.SetSkill(this);
+    }
 }
