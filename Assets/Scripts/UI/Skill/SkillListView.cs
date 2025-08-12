@@ -12,10 +12,17 @@ public class SkillListView : MonoBehaviour
 
     public SkillButton CurrentSkill => _currentSkill;
 
+    public void OnDisable()
+    {
+        _inputHandler.ResetField -= OnResetField;
+    }
+
     public void Init(SkillData skillData, InputHandler inputHandler)
     {
         _inputHandler = inputHandler;
         _off = skillData.Off;
+
+        _inputHandler.ResetField += OnResetField;
 
         _currentSkill = null;
 
@@ -30,13 +37,18 @@ public class SkillListView : MonoBehaviour
         }
     }
 
+    public void OnResetField()
+    {
+        SetSkill(null);
+    }
+
     public void SetSkill(SkillButton button)
     {
         if (_currentSkill == null || _currentSkill != button)
         {
             _currentSkill?.OffOuline();
             _currentSkill = button;
-            _currentSkill.OnOuline();
+            _currentSkill?.OnOuline();
         }
         else if (_currentSkill == button)
         {

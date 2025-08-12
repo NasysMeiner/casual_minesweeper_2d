@@ -8,11 +8,13 @@ public class FieldManager : MonoBehaviour
 
     private Field _field;
     private CellArray _cellArray;
+    private SkillManager _skillManager;
 
     private int _countClick = 0;
 
     public event UnityAction<CellDestroyedData> DestroyCell;
     public event UnityAction Damage;
+    public event UnityAction ResetInput;
 
     private void OnDisable()
     {
@@ -26,6 +28,7 @@ public class FieldManager : MonoBehaviour
 
         _field = new Field(cellData.Width, cellData.Height, cellData.CountBombs);
         _cellArray = new CellArray(cellData.Width, cellData.Height, cellData.Off, transform, cellData.Prefab, cellData.ColorText.Colors);
+        _skillManager = new SkillManager(_field, _cellArray);
 
         _inputHandler.DestroyCell += OnDestroyCell;
         _inputHandler.SetFlag += OnSetFlag;
@@ -36,6 +39,8 @@ public class FieldManager : MonoBehaviour
         _field.GenerateField();
         _cellArray.ResetCells();
         _countClick = 0;
+
+        ResetInput?.Invoke();
     }
 
     private void OnSetFlag(int[] coord)
@@ -55,13 +60,12 @@ public class FieldManager : MonoBehaviour
         if (_countClick == 1)
             ChangeBombPlace(ref isBomb, coord);
 
-        CellDestroyedData destroyedData = CreateDestroyedData(coord, isBomb); //Create Data Cell Destroyed
+        CellDestroyedData destroyedData = CreateDestroyedData(coord, isBomb, skill); //Create Data Cell Destroyed
 
-        if (!isBomb)
-            DestroyEmptyCell(coord); //Add destroy empty score
-
-        if (isBomb)
-            Damage?.Invoke();
+        //for(int i = 0; i < destroyedData.Cells.Count; i++)
+        //{
+        //    Debug.Log(destroyedData.Cells[i].Key[0] + " : " + destroyedData.Cells[i].Key[1] + " " + destroyedData.Cells[i].Value);
+        //}
 
         DestroyCell?.Invoke(destroyedData);
     }
@@ -110,9 +114,38 @@ public class FieldManager : MonoBehaviour
         } while (cells.Count != 0);
     }
 
-    private CellDestroyedData CreateDestroyedData(int[] coord, bool isBomb) //Preparation
+    private CellDestroyedData CreateDestroyedData(int[] coord, bool isBomb, Skills skill) //Preparation
     {
-        return DefaultDestroyCell(coord, isBomb);
+        bool isLoseHP = true;
+        CellDestroyedData data;
+
+        switch (skill)
+        {
+            case Skills.DrillAlert:
+                isLoseHP = false;
+                data = _skillManager.ApplyDrillAlert(coord, isBomb);
+                break;
+
+            case Skills.CheckBomb:
+                data = _skillManager.ApplyCheckBomb(coord);
+                break;
+
+            case Skills.Explosion:
+                data = _skillManager.ApplyExplosion(coord, isBomb);
+                break;
+
+            default:
+                data = DefaultDestroyCell(coord, isBomb);
+                break;
+        }
+
+        if (!isBomb && data.EmptyCell.Count != 0)
+            DestroyEmptyCell(coord);
+
+        if (isBomb && isLoseHP)
+            Damage?.Invoke();
+
+        return data;
     }
 
     private CellDestroyedData DefaultDestroyCell(int[] coord, bool isBomb)

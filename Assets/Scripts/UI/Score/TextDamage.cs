@@ -26,7 +26,6 @@ public class TextDamage : MonoBehaviour
     private IEnumerator TextAnimation()
     {
         Color color;
-        float delta;
         Vector3 pos = _startPosition;
         float time = 0;
 
