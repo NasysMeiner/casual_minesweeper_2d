@@ -42,9 +42,17 @@ public class SkillManager
 
     internal CellDestroyedData ApplyDrillAlert(int[] coord, bool isBomb)
     {
-        throw new NotImplementedException();
-    }
+        CellDestroyedData data = new() { Skill = Skills.DrillAlert };
 
+        _cellArray.DestroyCell(coord, isBomb);
+
+        if (isBomb && !_cellArray.GetIsSetFlag(coord))
+            _cellArray.SetFlag(coord);
+
+        data.AddCell(_cellArray.GetPositionCell(coord), isBomb);
+
+        return data;
+    }
     internal CellDestroyedData ApplyExplosion(int[] coord, bool isBomb)
     {
         throw new NotImplementedException();

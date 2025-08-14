@@ -36,12 +36,10 @@ public class Cell : MonoBehaviour
 
     public void Destroy(bool isBomb)
     {
-        if (_outlineCell.IsSetFlag)
-            return;
-
         IsDestroy = true;
 
         _outlineCell.OffSprite();
+        OffFlag();
 
         if (isBomb)
             _outlineCell.OnBomb();
@@ -52,7 +50,7 @@ public class Cell : MonoBehaviour
 
     public void OnOutline()
     {
-        if(!IsDestroy)
+        if (!IsDestroy)
             _outlineCell.OnOutline();
     }
 
@@ -69,13 +67,12 @@ public class Cell : MonoBehaviour
 
     public void SetFlag()
     {
-        if(!IsDestroy)
-        {
-            if (!_outlineCell.IsSetFlag)
-                _outlineCell.SetFlag();
-            else
-                _outlineCell.OffFlag();
-        }
+        _outlineCell.SetFlag();
+    }
+
+    public void OffFlag()
+    {
+        _outlineCell.OffFlag();
     }
 
     public bool GetIsSetFlag()

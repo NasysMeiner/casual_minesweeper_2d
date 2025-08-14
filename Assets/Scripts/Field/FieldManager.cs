@@ -45,7 +45,8 @@ public class FieldManager : MonoBehaviour
 
     private void OnSetFlag(int[] coord)
     {
-        _cellArray.SetFlag(coord);
+        if(!_cellArray.IsDestroy(coord))
+            _cellArray.SetFlag(coord);
     }
 
     private void OnDestroyCell(int[] coord, Skills skill)

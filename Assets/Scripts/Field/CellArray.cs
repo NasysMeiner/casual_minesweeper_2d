@@ -56,7 +56,12 @@ public class CellArray
 
     public void SetFlag(int[] coord)
     {
-        GetCell(coord).SetFlag();
+        Cell cell = GetCell(coord);
+
+        if (!cell.GetIsSetFlag())
+            cell.SetFlag();
+        else
+            cell.OffFlag();
     }
 
     public bool GetIsSetFlag(int[] coord)
