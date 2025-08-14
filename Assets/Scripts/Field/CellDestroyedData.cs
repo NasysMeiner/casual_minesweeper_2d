@@ -5,6 +5,7 @@ public class CellDestroyedData
 {
     public List<Vector3> EmptyCell = new();
     public List<Vector3> BombCell = new();
+    public Skills Skill;
     public List<KeyValuePair<int[], bool>> Cells;
 
     public bool IsDamage = false;

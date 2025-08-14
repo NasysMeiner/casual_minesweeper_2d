@@ -82,4 +82,9 @@ public class Cell : MonoBehaviour
     {
         return _outlineCell.IsSetFlag;
     }
+
+    public void CheckBombView(bool isBomb)
+    {
+        _outlineCell.CheckBombView(isBomb);
+    }
 }

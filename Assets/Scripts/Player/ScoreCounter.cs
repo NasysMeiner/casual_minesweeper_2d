@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class ScoreCounter : MonoBehaviour
 {
-    private FieldManager _fieldManager;
     private AnimCreator _animCreator;
 
     private int _defaultPointCell;
@@ -14,26 +13,18 @@ public class ScoreCounter : MonoBehaviour
 
     public event UnityAction<int> ScoreUpdate;
 
-    private void OnDisable()
-    {
-        _fieldManager.DestroyCell -= OnDestroyCell;
-    }
-
-    public void Init(FieldManager fieldManager, PointsCellData pointsData, AnimCreator animCreator)
+    public void Init(PointsCellData pointsData, AnimCreator animCreator)
     {
         Score = 0;
 
-        _fieldManager = fieldManager;
         _animCreator = animCreator;
-
-        _fieldManager.DestroyCell += OnDestroyCell;
 
         _defaultPointCell = pointsData.DefaultPointCell;
         _pointBombCellPlus = pointsData.PointBombCellPlus;
         _pointBombCellMinus = pointsData.PointBombCellMinus;
     }
 
-    private void OnDestroyCell(CellDestroyedData destroyedData)
+    public void DestroyCell(CellDestroyedData destroyedData)
     {
         int countEmpty = destroyedData.EmptyCell.Count;
         int countBomb = destroyedData.BombCell.Count;

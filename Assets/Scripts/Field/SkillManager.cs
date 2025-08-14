@@ -35,12 +35,9 @@ public class SkillManager
             }
         }
 
-        CellDestroyedData cellDestroyed = new();
+        _cellArray.CheckBombView(cells);
 
-        cellDestroyed.Cells = cells;
-
-
-        return cellDestroyed;
+        return new() { Skill = Skills.CheckBomb };
     }
 
     internal CellDestroyedData ApplyDrillAlert(int[] coord, bool isBomb)

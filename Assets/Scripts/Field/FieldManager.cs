@@ -50,7 +50,7 @@ public class FieldManager : MonoBehaviour
 
     private void OnDestroyCell(int[] coord, Skills skill)
     {
-        if (_cellArray.GetIsSetFlag(coord) || _cellArray.IsDestroy(coord))
+        if ((skill != Skills.Default && CheckNeighboringCell(coord)) || (_cellArray.GetIsSetFlag(coord) && skill == Skills.Default) || _cellArray.IsDestroy(coord))
             return;
 
         _countClick++;
@@ -127,6 +127,7 @@ public class FieldManager : MonoBehaviour
                 break;
 
             case Skills.CheckBomb:
+                isLoseHP = false;
                 data = _skillManager.ApplyCheckBomb(coord);
                 break;
 
@@ -193,5 +194,28 @@ public class FieldManager : MonoBehaviour
                     _cellArray.SetCountBomb(new int[] { j, i }, count);
             }
         }
+    }
+
+    private bool CheckNeighboringCell(int[] coord)
+    {
+        int h = coord[1] - 1 < 0 ? 0 : coord[1] - 1;
+        int w = coord[0] - 1 < 0 ? 0 : coord[0] - 1;
+
+        for (int y = h; y <= coord[1] + 1; y++)
+        {
+            if (y >= _field.GetHeight)
+                break;
+
+            for (int x = w; x <= coord[0] + 1; x++)
+            {
+                if (x >= _field.GetWidth)
+                    break;
+
+                if (_cellArray.IsDestroy(new int[] { x, y }))
+                    return false;
+            }
+        }
+
+        return true;
     }
 }

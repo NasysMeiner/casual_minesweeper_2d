@@ -60,12 +60,14 @@ public class CompositeRootField : CompositeRoot
         _resetButton.Init(_fieldManager, _inputHandler);
 
         _scoreCounter = Instantiate(_prefabScoreCounter, transform);
-        _scoreCounter.Init(_fieldManager, _pointsCellData, _canvas.AnimCreator);
+        _scoreCounter.Init(_pointsCellData, _canvas.AnimCreator);
 
         _healthManager = Instantiate(_prefabHealthManager, transform);
         _healthManager.Init(_countHealth, _fieldManager);
 
         //UI
+        _canvas.ResponseTaker.InitGame(_fieldManager, _scoreCounter);
+        _canvas.ResponseTaker.InitUi(_canvas.SkillListView);
 
         _canvas.HealthView.Init(_countHealth, _off, _prefabHeart, _healthManager);
         _canvas.ScoreView.Init(_scoreCounter);

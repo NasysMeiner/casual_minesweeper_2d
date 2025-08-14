@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,6 +8,7 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [SerializeField] private Image _spriteSkill;
     [SerializeField] private Image _outline;
+    [SerializeField] private TMP_Text _textCoolDown;
 
     [SerializeField] private Color _activeColor;
     [SerializeField] private Color _inactiveColor;
@@ -14,6 +17,7 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Skills _typeSkill;
 
     private bool _isHovering = false;
+    private bool _isInteractable = true;
 
     public Skills TypeSkill => _typeSkill;
     public bool IsHovering => _isHovering;
@@ -29,6 +33,9 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!_isInteractable)
+            return;
+
         _isHovering = true;
 
         if (_skillListView.CurrentSkill == null || _skillListView.CurrentSkill.TypeSkill != _typeSkill)
@@ -40,10 +47,18 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!_isInteractable)
+            return;
+
         _isHovering = false;
 
         if (_skillListView.CurrentSkill == null || _skillListView.CurrentSkill.TypeSkill != _typeSkill)
             _outline.enabled = false;
+    }
+
+    public void SetCoolDown(float time)
+    {
+        StartCoroutine(CoolDown(time));
     }
 
     public void OnOuline()
@@ -65,5 +80,21 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void SetSkill()
     {
         _skillListView.SetSkill(this);
+    }
+
+    private IEnumerator CoolDown(float time)
+    {
+        Button button = gameObject.GetComponent<Button>();
+        button.interactable = false;
+
+        while (time > 0)
+        {
+            time -= Time.deltaTime;
+            _textCoolDown.text = ((int)time).ToString();
+            yield return null;
+        }
+
+        button.interactable = true;
+        _textCoolDown.text = "";
     }
 }

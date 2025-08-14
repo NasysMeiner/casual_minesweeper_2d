@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CellArray
 {
@@ -66,6 +67,17 @@ public class CellArray
     public Vector3 GetPositionCell(int[] coord)
     {
         return GetCell(coord).transform.position;
+    }
+
+    public void CheckBombView(List<KeyValuePair<int[], bool>> cells)
+    {
+        for(int i = 0; i < cells.Count; i++)
+        {
+            Cell cell = GetCell(cells[i].Key);
+
+            if(!cell.IsDestroy)
+                cell.CheckBombView(cells[i].Value);
+        }
     }
 
     private Cell GetCell(int[] coord)

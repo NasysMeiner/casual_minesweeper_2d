@@ -629,6 +629,8 @@ MonoBehaviour:
   _sr: {fileID: 5540075017009533581}
   _text: {fileID: 3809628061976804716}
   _flag: {fileID: 8637650557766077090}
+  _speedChangeColor: 0.5
+  _minAlpha: 0.2
 --- !u!65 &2533622645893753680
 BoxCollider:
   m_ObjectHideFlags: 0

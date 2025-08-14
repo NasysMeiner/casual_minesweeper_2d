@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class OutlineCell : MonoBehaviour
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private SpriteRenderer _flag;
+    [SerializeField] private float _speedChangeColor = 0.5f;
+    [SerializeField] private float _minAlpha = 0.2f;
 
     private SpriteRenderer _cellSpriteRenderer;
     private List<Color> _colorText;
@@ -58,6 +61,7 @@ public class OutlineCell : MonoBehaviour
     public void OffSprite()
     {
         OffOutline();
+        StopAllCoroutines();
         Color newColor = _cellSpriteRenderer.color;
         newColor.a = 0f;
         _cellSpriteRenderer.color = newColor;
@@ -88,5 +92,32 @@ public class OutlineCell : MonoBehaviour
     {
         IsSetFlag = false;
         _flag.gameObject.SetActive(false);
+    }
+
+    public void CheckBombView(bool isBomb)
+    {
+        if(isBomb)
+            OnBomb();
+
+        Color newColor = _cellSpriteRenderer.color;
+        newColor.a = _minAlpha;
+        _cellSpriteRenderer.color = newColor;
+
+        StopAllCoroutines();
+        StartCoroutine(ChangeColor());
+    }
+
+    private IEnumerator ChangeColor()
+    {
+        Color newColor;
+
+        while (_cellSpriteRenderer.color.a < 1)
+        {
+            newColor = _cellSpriteRenderer.color;
+            newColor.a += Time.fixedDeltaTime * _speedChangeColor;
+            _cellSpriteRenderer.color = newColor;
+
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

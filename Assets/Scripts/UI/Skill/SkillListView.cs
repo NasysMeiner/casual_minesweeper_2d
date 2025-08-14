@@ -37,6 +37,15 @@ public class SkillListView : MonoBehaviour
         }
     }
 
+    public void ResetSkill(Skills skill)
+    {
+        //skillCount--;
+        if(_currentSkill.TypeSkill == skill)
+            _currentSkill.SetCoolDown(6);
+
+        SetSkill(null);
+    }
+
     public void OnResetField()
     {
         SetSkill(null);

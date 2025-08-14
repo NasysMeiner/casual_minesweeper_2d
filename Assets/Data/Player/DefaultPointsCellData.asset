@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: DefaultPointsCellData
   m_EditorClassIdentifier: 
   DefaultPointCell: 5
+  PointBombCellPlus: 10
+  PointBombCellMinus: -10
