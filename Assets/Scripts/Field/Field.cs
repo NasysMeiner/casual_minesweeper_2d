@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 
 public class Field 
 {
@@ -7,12 +8,21 @@ public class Field
     private int _y;
     private int _countBomb;
     private List<List<int>> _field = new List<List<int>>();
+    private TypeMap _typeMap;
 
     public int GetWidth => _x;
     public int GetHeight => _y;
 
-    public Field(int x, int y, int countBomb)
+    public Field(int x, int y, int countBomb, TypeMap typeMap = TypeMap.Default)
     {
+        _typeMap = typeMap;
+
+        if (typeMap != TypeMap.Default)
+        {
+            CreateTypeMap(typeMap);
+            return;
+        }
+
         _x = x;
         _y = y;
         _countBomb = countBomb;
@@ -32,7 +42,13 @@ public class Field
     {
         ClearField();
 
-        if(_x * _y <= _countBomb)
+        if (_typeMap != TypeMap.Default)
+        {
+            CreateTypeMap(_typeMap);
+            return;
+        }
+
+        if (_x * _y <= _countBomb)
             _countBomb = _x * _y - 1;
 
         Random random = new Random();
@@ -112,6 +128,40 @@ public class Field
             {
                 _field[i][j] = 0;
             }
+        }
+    }
+
+    private void CreateTypeMap(TypeMap typeMap)
+    {
+        switch(typeMap)
+        {
+            case TypeMap.TestMapDest:
+                CreateTestMapDest();
+            break;
+        }
+    }
+
+    private void CreateTestMapDest()
+    {
+        _x = 4;
+        _y = 4;
+
+        CreateEmptyField();
+
+        SetValue(1, 1, 1);
+        SetValue(1, 2, 1);
+        SetValue(2, 2, 1);
+        SetValue(0, 3, 1);
+    }
+
+    private void CreateEmptyField()
+    {
+        for (int i = 0; i < _x; i++)
+        {
+            _field.Add(new List<int>());
+
+            for (int j = 0; j < _y; j++)
+                _field[i].Add(0);
         }
     }
 }

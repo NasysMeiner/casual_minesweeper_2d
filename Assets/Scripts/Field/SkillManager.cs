@@ -42,9 +42,10 @@ public class SkillManager
 
     internal CellDestroyedData ApplyDrillAlert(int[] coord, bool isBomb)
     {
+        bool isBoom = false;
         CellDestroyedData data = new() { Skill = Skills.DrillAlert };
 
-        _cellArray.DestroyCell(coord, isBomb);
+        _cellArray.DestroyCell(coord, isBomb, isBoom);
 
         if (isBomb && !_cellArray.GetIsSetFlag(coord))
             _cellArray.SetFlag(coord);

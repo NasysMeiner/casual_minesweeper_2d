@@ -11,6 +11,7 @@ public class FieldManager : MonoBehaviour
     private SkillManager _skillManager;
 
     private int _countClick = 0;
+    private bool _isSafeFirstClick = true;
 
     public event UnityAction<CellDestroyedData> DestroyCell;
     public event UnityAction Damage;
@@ -26,8 +27,10 @@ public class FieldManager : MonoBehaviour
     {
         _inputHandler = inputHandler;
 
-        _field = new Field(cellData.Width, cellData.Height, cellData.CountBombs);
-        _cellArray = new CellArray(cellData.Width, cellData.Height, cellData.Off, transform, cellData.Prefab, cellData.ColorText.Colors);
+        _isSafeFirstClick = cellData.IsSafeFirstClick;
+
+        _field = new Field(cellData.Width, cellData.Height, cellData.CountBombs, cellData.TypeMap);
+        _cellArray = new CellArray(_field.GetWidth, _field.GetHeight, cellData.Off, transform, cellData.Prefab, cellData.ColorText.Colors);
         _skillManager = new SkillManager(_field, _cellArray);
 
         _inputHandler.DestroyCell += OnDestroyCell;
@@ -152,7 +155,8 @@ public class FieldManager : MonoBehaviour
 
     private CellDestroyedData DefaultDestroyCell(int[] coord, bool isBomb)
     {
-        _cellArray.DestroyCell(coord, isBomb);
+        bool isBoom = isBomb;
+        _cellArray.DestroyCell(coord, isBomb, isBoom);
         CellDestroyedData newData = new();
         newData.IsDamage = isBomb;
         newData.AddCell(_cellArray.GetPositionCell(coord), isBomb);
@@ -161,7 +165,7 @@ public class FieldManager : MonoBehaviour
 
     private void ChangeBombPlace(ref bool isBomb, int[] coord)
     {
-        if (isBomb)
+        if (isBomb && _isSafeFirstClick)
         {
             isBomb = false;
             int[] newCoore = _field.ChangePositionBomb(coord[0], coord[1]);

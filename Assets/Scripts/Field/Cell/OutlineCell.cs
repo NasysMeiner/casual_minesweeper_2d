@@ -10,6 +10,8 @@ public class OutlineCell : MonoBehaviour
     [SerializeField] private SpriteRenderer _sr;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private SpriteRenderer _flag;
+    [SerializeField] private GameObject _effectDestroy;
+    [SerializeField] private GameObject _effectBoom;
     [SerializeField] private float _speedChangeColor = 0.5f;
     [SerializeField] private float _minAlpha = 0.2f;
 
@@ -35,6 +37,9 @@ public class OutlineCell : MonoBehaviour
 
     public void ResetOutline()
     {
+        _effectDestroy.SetActive(false);
+        _effectBoom.SetActive(false);
+
         Color newColor = _cellSpriteRenderer.color;
         newColor.a = 255f;
         _cellSpriteRenderer.color = newColor;
@@ -72,6 +77,16 @@ public class OutlineCell : MonoBehaviour
         Color newColor = _sr.color;
         newColor.a = 255f;
         _sr.color = newColor;
+    }
+
+    public void EffectDestroy()
+    {
+        _effectDestroy.SetActive(true);
+    }
+
+    public void EffectBoom()
+    {
+        _effectBoom.SetActive(true);
     }
 
     public void SetCountBomb( int count)

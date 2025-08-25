@@ -34,9 +34,11 @@ public class CellArray
             cell.ResetCell();
     }
 
-    public void DestroyCell(int[] coord, bool isBomb)
+    public void DestroyCell(int[] coord, bool isBomb, bool isBoom)
     {
-        GetCell(coord).Destroy(isBomb);
+        Cell cell = GetCell(coord);
+        cell.Destroy(isBomb);
+        cell.OnEffectBomb(isBoom);
     }
 
     public bool IsDestroy(int[] coord)

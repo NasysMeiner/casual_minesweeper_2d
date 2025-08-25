@@ -40,12 +40,17 @@ public class Cell : MonoBehaviour
 
         _outlineCell.OffSprite();
         OffFlag();
-
+       
         if (isBomb)
             _outlineCell.OnBomb();
+    }
 
-        if (isBomb)
-            Debug.Log("Boom!!!");
+    public void OnEffectBomb(bool isBoom)
+    {
+        if(isBoom)
+            _outlineCell.EffectBoom();
+        else
+            _outlineCell.EffectDestroy();
     }
 
     public void OnOutline()
