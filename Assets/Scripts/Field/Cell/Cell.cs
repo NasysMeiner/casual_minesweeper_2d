@@ -45,6 +45,11 @@ public class Cell : MonoBehaviour
             _outlineCell.OnBomb();
     }
 
+    public void SetDestroy()
+    {
+        IsDestroy = true;
+    }
+
     public void OnEffectBomb(bool isBoom)
     {
         if(isBoom)

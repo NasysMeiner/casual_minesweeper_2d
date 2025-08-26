@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,14 +65,14 @@ public class FieldManager : MonoBehaviour
         if (_countClick == 1)
             ChangeBombPlace(ref isBomb, coord);
 
-        CellDestroyedData destroyedData = CreateDestroyedData(coord, isBomb, skill); //Create Data Cell Destroyed
+        CreateDestroyedData(coord, isBomb, skill); //Create Data Cell Destroyed
 
         //for(int i = 0; i < destroyedData.Cells.Count; i++)
         //{
         //    Debug.Log(destroyedData.Cells[i].Key[0] + " : " + destroyedData.Cells[i].Key[1] + " " + destroyedData.Cells[i].Value);
         //}
 
-        DestroyCell?.Invoke(destroyedData);
+        //DestroyCell?.Invoke(destroyedData);
     }
 
     private void DestroyEmptyCell(List<int[]> coords)
@@ -111,14 +112,14 @@ public class FieldManager : MonoBehaviour
                             cells.Add(newCoord);
 
                         if (_field.GetValue(x, y) != 1 && ((isNumberCell && _cellArray.GetCountBomb(newCoord) == 0) || !isNumberCell))
-                            DefaultDestroyCell(newCoord, false);
+                            _skillManager.DefaultDestroyCell(newCoord, false);
                     }
                 }
             }
         } while (cells.Count != 0);
     }
 
-    private CellDestroyedData CreateDestroyedData(int[] coord, bool isBomb, Skills skill) //Preparation
+    private void CreateDestroyedData(int[] coord, bool isBomb, Skills skill) //Preparation
     {
         bool isLoseHP = true;
         CellDestroyedData data;
@@ -136,11 +137,13 @@ public class FieldManager : MonoBehaviour
                 break;
 
             case Skills.Explosion:
-                data = _skillManager.ApplyExplosion(coord, isBomb);
+                isLoseHP = false;
+                data = _skillManager.ApplyExplosion(coord, isBomb, out List<int[]> queueDestroy);
+                StartCoroutine(StartDestroy(queueDestroy));
                 break;
 
             default:
-                data = DefaultDestroyCell(coord, isBomb);
+                data = _skillManager.DefaultDestroyCell(coord, isBomb);
                 break;
         }
 
@@ -150,17 +153,7 @@ public class FieldManager : MonoBehaviour
         if (isBomb && isLoseHP)
             Damage?.Invoke();
 
-        return data;
-    }
-
-    private CellDestroyedData DefaultDestroyCell(int[] coord, bool isBomb)
-    {
-        bool isBoom = isBomb;
-        _cellArray.DestroyCell(coord, isBomb, isBoom);
-        CellDestroyedData newData = new();
-        newData.IsDamage = isBomb;
-        newData.AddCell(_cellArray.GetPositionCell(coord), isBomb);
-        return newData;
+        DestroyCell?.Invoke(data);
     }
 
     private void ChangeBombPlace(ref bool isBomb, int[] coord)
@@ -222,5 +215,27 @@ public class FieldManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    private IEnumerator StartDestroy(List<int[]> data)
+    {
+        CellDestroyedData newData = new() { Skill = Skills.Default };
+
+        foreach (int[] coord in data)
+        {
+            if(coord != null)
+            {
+                bool isBomb = _field.GetValue(coord[0], coord[1]) == 1 ? true : false;
+                _cellArray.DestroyCell(coord, false, isBomb);
+                newData.AddCell(_cellArray.GetPositionCell(coord), isBomb);
+                DestroyEmptyCell(coord);
+            }
+            else
+            {
+                DestroyCell?.Invoke(newData);
+                newData = new();
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
     }
 }

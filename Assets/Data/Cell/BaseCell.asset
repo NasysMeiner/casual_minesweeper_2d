@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: addf91b3d93a9064c807abd951c8e531, type: 3}
   m_Name: BaseCell
   m_EditorClassIdentifier: 
-  TypeMap: 0
+  TypeMap: 2
   Width: 10
   Height: 9
   Off: 1

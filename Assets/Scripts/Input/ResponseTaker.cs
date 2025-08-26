@@ -29,6 +29,9 @@ public class ResponseTaker : MonoBehaviour
 
     public void OnDestroyCell(CellDestroyedData destroyedData)
     {
+        if (destroyedData == null)
+            return;
+
         _scoreCounter.DestroyCell(destroyedData);
 
         if(destroyedData.Skill != Skills.Default)

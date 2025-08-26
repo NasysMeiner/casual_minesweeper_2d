@@ -41,6 +41,11 @@ public class CellArray
         cell.OnEffectBomb(isBoom);
     }
 
+    public void SetDestroy(int[] coord)
+    {
+        GetCell(coord).SetDestroy();
+    }
+
     public bool IsDestroy(int[] coord)
     {
         return GetCell(coord).IsDestroy;

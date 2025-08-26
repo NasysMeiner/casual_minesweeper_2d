@@ -1,5 +1,6 @@
 public enum TypeMap
 {
     Default,
-    TestMapDest,
+    TestMapDest1,
+    TestMapDest2,
 }

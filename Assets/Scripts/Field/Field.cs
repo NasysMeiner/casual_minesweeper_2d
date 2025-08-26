@@ -135,10 +135,36 @@ public class Field
     {
         switch(typeMap)
         {
-            case TypeMap.TestMapDest:
+            case TypeMap.TestMapDest1:
                 CreateTestMapDest();
             break;
+            case TypeMap.TestMapDest2:
+                CreateTestMapDest2();
+            break;
         }
+    }
+
+    private void CreateTestMapDest2()
+    {
+        _x = 9;
+        _y = 6;
+
+        CreateEmptyField();
+
+        SetValue(1, 0, 1);
+        SetValue(3, 0, 1);
+        SetValue(0, 1, 1);
+        SetValue(4, 1, 1);
+        SetValue(0, 2, 1);
+        SetValue(4, 2, 1);
+        SetValue(5, 2, 1);
+        SetValue(6, 2, 1);
+        SetValue(7, 2, 1);
+        SetValue(0, 3, 1);
+        SetValue(4, 3, 1);
+        SetValue(1, 4, 1);
+        SetValue(3, 4, 1);
+        SetValue(2, 5, 1);
     }
 
     private void CreateTestMapDest()
